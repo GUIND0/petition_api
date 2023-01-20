@@ -7,11 +7,10 @@ import lombok.Setter;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedBy;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
 import java.time.Instant;
+import java.util.List;
 
 @Entity(name = "categories")
 @Setter
@@ -23,7 +22,12 @@ public class Category {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @NotBlank(message = "Title is required")
     private String title;
+
+    @OneToMany(cascade = CascadeType.ALL)
+    @JoinColumn(name = "category",referencedColumnName = "id")
+    private List<Petition> petitions;
 
     @CreatedDate
     private Instant createdAt;
